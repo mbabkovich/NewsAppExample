@@ -1,3 +1,15 @@
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+const NewsArticleScheme = new Schema({
+    title: { type: String, index: true },
+    content: String
+  });
+
+const NewsArticleModel = mongoose.model('NewsArticle', NewsArticleScheme);
+   
+
 let instance;
 
 class NewsModel {
@@ -7,47 +19,36 @@ class NewsModel {
         }
 
         instance = this;
-        this._nextId = 0;
-        this._newsArticles = [
-            {
-                id: this._nextId++,
-                title: 'title 1',
-                content: 'Very interesting article'
-            },
-            {
-                id: this._nextId++,
-                title: 'title 2',
-                content: 'Very interesting article 2'
-            }
-        ];
+        
+        mongoose.connect('mongodb://localhost/newsDb');
     }
 
-    get newsArticles() {
-        return this._newsArticles;
+    async getNewsArticles() {
+        return await NewsArticleModel.find();
     }
 
-    getNewsArticle(id) {
-        let article = this._newsArticles.find(value => value.id == id);
-        return article;
+    async getNewsArticle(id) {
+        return await NewsArticleModel.findOne({ _id: id });
     }
 
-    addNewsArticle(newsArticle) {
-        newsArticle.id = this._nextId++;
-        this._newsArticles.push(newsArticle);
-        return newsArticle.id;
+    async addNewsArticle(newsArticle) {
+        let newsArticleModel = new NewsArticleModel();
+        newsArticleModel.title = newsArticle.title;
+        newsArticleModel.content = newsArticle.content;
+        await newsArticleModel.save();
+        return newsArticleModel._id;
     }
 
-    updateNewsArticle(id, newsArticle) {
-        let articleIndex = this._newsArticles.findIndex(value => value.id == id);
-        newsArticle.id = id;
-        this._newsArticles[articleIndex] = newsArticle;
-        return true;
+    async updateNewsArticle(id, newsArticle) {
+        let newsArticleModel = await NewsArticleModel.findOne({ _id: id });
+        newsArticleModel.title = newsArticle.title;
+        newsArticleModel.content = newsArticle.content;
+        await newsArticleModel.save();
     }
 
-    deleteNewsArticle(id) {
-        let articleIndex = this._newsArticles.findIndex(value => value.id == id);
-        this._newsArticles.splice(articleIndex, 1);
-        return true;
+    async deleteNewsArticle(id) {
+        let newsArticleModel = await NewsArticleModel.findOne({ _id: id });
+        await newsArticleModel.remove();
     }
 }
 
