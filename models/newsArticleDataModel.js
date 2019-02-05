@@ -1,4 +1,4 @@
-class NewsArticleModel {
+class NewsArticleDataModel {
     constructor(newsArticleModel) {
         if (newsArticleModel) {
             this._id = newsArticleModel.id;
@@ -29,4 +29,4 @@ class NewsArticleModel {
     }
 }
 
-module.exports = NewsArticleModel;
+module.exports = NewsArticleDataModel;
