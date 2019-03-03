@@ -4,7 +4,12 @@ const Schema = mongoose.Schema;
 
 const NewsArticleScheme = new Schema({
     title: { type: String, index: true },
-    content: String
+    author: String,
+    description: String,
+    url: String,
+    urlToImage: String,
+    publishedAt: { type: Date, default: Date.now },
+    content: String,
   });
 
 const NewsArticleModel = mongoose.model('NewsArticle', NewsArticleScheme);
@@ -23,8 +28,8 @@ class NewsModel {
         mongoose.connect('mongodb://localhost/newsDb');
     }
 
-    async getNewsArticles() {
-        return await NewsArticleModel.find();
+    async getNewsArticles(page, pageSize) {
+        return await NewsArticleModel.find().skip(page * pageSize).limit(pageSize);
     }
 
     async getNewsArticle(id) {

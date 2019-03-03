@@ -19,7 +19,7 @@ class NewsController {
 
     async _getNewsArticles(req, res, next) {
         try {
-            let newsArticles = await this.newsModel.getNewsArticles();
+            let newsArticles = await this.newsModel.getNewsArticles(+(req.params.page), +(req.params.pageSize));
             res.send(newsArticles);
         }
         catch (err) {

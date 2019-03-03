@@ -6,14 +6,14 @@ var passport = require('passport');
 var express = require('express');
 var router = express.Router();
 
-router.get('/', newsController.getNewsArticles);
+router.get('/:page/:pageSize', newsController.getNewsArticles);
 
 router.get('/:id', newsController.getNewsArticle);
 
-router.post('/', passport.authenticate('jwt', {session: false}), newsController.addNewsArticle);
+router.post('/', newsController.addNewsArticle);
 
-router.put('/:id', passport.authenticate('jwt', {session: false}), newsController.updateNewsArticle);
+router.put('/:id', newsController.updateNewsArticle);
 
-router.delete('/:id', passport.authenticate('jwt', {session: false}), newsController.deleteNewsArticle);
+router.delete('/:id', newsController.deleteNewsArticle);
 
 module.exports = router;
