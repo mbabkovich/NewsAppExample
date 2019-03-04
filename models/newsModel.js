@@ -10,7 +10,7 @@ const NewsArticleScheme = new Schema({
     urlToImage: String,
     publishedAt: { type: Date, default: Date.now },
     content: String,
-  });
+  }, { versionKey: false });
 
 const NewsArticleModel = mongoose.model('NewsArticle', NewsArticleScheme);
    
@@ -38,16 +38,14 @@ class NewsModel {
 
     async addNewsArticle(newsArticle) {
         let newsArticleModel = new NewsArticleModel();
-        newsArticleModel.title = newsArticle.title;
-        newsArticleModel.content = newsArticle.content;
+        Object.assign(newsArticleModel, newsArticle);
         await newsArticleModel.save();
         return newsArticleModel._id;
     }
 
     async updateNewsArticle(id, newsArticle) {
         let newsArticleModel = await NewsArticleModel.findOne({ _id: id });
-        newsArticleModel.title = newsArticle.title;
-        newsArticleModel.content = newsArticle.content;
+        Object.assign(newsArticleModel, newsArticle);
         await newsArticleModel.save();
     }
 

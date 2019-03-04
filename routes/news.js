@@ -10,10 +10,12 @@ router.get('/:page/:pageSize', newsController.getNewsArticles);
 
 router.get('/:id', newsController.getNewsArticle);
 
-router.post('/', newsController.addNewsArticle);
+// To enable authentication uncomment below comments.
 
-router.put('/:id', newsController.updateNewsArticle);
+router.post('/', /*passport.authenticate('jwt', {session: false}),*/ newsController.addNewsArticle);
 
-router.delete('/:id', newsController.deleteNewsArticle);
+router.put('/:id', /*passport.authenticate('jwt', {session: false}),*/ newsController.updateNewsArticle);
+
+router.delete('/:id', /*passport.authenticate('jwt', {session: false}),*/ newsController.deleteNewsArticle);
 
 module.exports = router;
