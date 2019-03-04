@@ -43,7 +43,7 @@ class NewsController {
             let newsArticle = new NewsArticleDataModel(newsArticleData);
             let id = await this.newsModel.addNewsArticle(newsArticle);
             if (id) {
-                res.send(`News article was successfully created, id = ${id}`);
+                res.send({ id: id });
             }
             else {
                 next(new Error('News article was not created'));
@@ -59,7 +59,7 @@ class NewsController {
             let newsArticleData = req.body;
             let newsArticle = new NewsArticleDataModel(newsArticleData);
             await this.newsModel.updateNewsArticle(req.params.id, newsArticle);
-            res.send('News article was successfully updated');
+            res.send({ id: req.params.id });
         }
         catch (err) {
             next(err)
@@ -69,7 +69,7 @@ class NewsController {
     async _deleteNewsArticle(req, res, next) {
         try {
             await this.newsModel.deleteNewsArticle(req.params.id);
-            res.send('News article was successfully deleted');
+            res.send({ id: req.params.id });
         }
         catch (err) {
             next(err)
